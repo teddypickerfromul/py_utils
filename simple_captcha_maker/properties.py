@@ -1,7 +1,11 @@
 #!/usr/bin/env
 # -*- coding: utf-8 -*-
 
-from ConfigParser import SafeConfigParser
+try:
+    from ConfigParser import SafeConfigParser
+except:
+    print 'You need to install ConfigParser package.'
+    sys.exit()
 
 
 class Properties:
@@ -29,4 +33,4 @@ class Properties:
                 return self.cfgParser.get('default', 'word_length')
 
         def getWordType(self):
-                return self.cfgParser.get('default', 'word_type')                
+                return self.cfgParser.get('default', 'word_type')

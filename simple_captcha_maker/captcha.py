@@ -1,10 +1,14 @@
 #!/usr/bin/env
 # -*- coding: utf-8 -*-
 
-import Image
-import ImageDraw
-import ImageFont
-from os import chdir, path
+import os
+
+try:
+    import Image, ImageDraw, ImageDraw, ImageFont
+except:
+    print 'You need to install Image packages.'
+    sys.exit()
+
 
 class Captcha():
     """Класс делающий картинку с нужным текстом, размерами и шрифтом"""
@@ -15,9 +19,9 @@ class Captcha():
         self.height = ImageHeight
 
     # def __init__(self, text=u"", font_size=62, width=300, height=100)
-	
-	def setText(self, Text):
-		self.text = unicode(Text, 'utf-8')
+
+    def setText(self, Text):
+        self.text = unicode(Text, 'utf-8')
 
     def setFontSize(self, Font_size):
         self.font_size = Font_size
@@ -39,27 +43,37 @@ class Captcha():
 
     def getHeight(self):
         return self.height
-    
+
     #TODO: убрать хардкод и сделать выравнивание + подгонку размера текста
     def saveImage(self):
-        font_dir = "/usr/share/fonts/truetype/msttcorefonts/"
-        fnt = ImageFont.truetype(font_dir +"Verdana.ttf", self.getFontSize())
-        img = Image.new('L', (self.width, self.height), 255)
-        draw = ImageDraw.Draw(img)
-        text_to_draw = self.text
-        draw.text((5, 5), text_to_draw, font= fnt)
-        img.save(self.text+'.png')
-        return draw
-    
-	def saveImageToPath(self, Path):
-		font_dir = "/usr/share/fonts/truetype/msttcorefonts/"
-        fnt = ImageFont.truetype(font_dir +"Verdana.ttf", self.font_size)
-        img = Image.new('L', (self.width, self.height), 255)
-        draw = ImageDraw.Draw(img)
-        text_to_draw = self.text
-        draw.text((5, 5), text_to_draw, font= fnt)
-        if Path.endswith('/'):
-            img.save(Path+self.text+'.png')
+        if not os.path.isdir("font"):
+            font_dir = "/usr/share/fonts/truetype/msttcorefonts/"
         else:
-            img.save(Path+'/'+self.text+'.png')
+            font_dir = "font/"
+
+        # TODO: сделать шрифт параметром
+        fnt = ImageFont.truetype(font_dir + "Verdana.ttf", self.getFontSize())
+        img = Image.new('L', (self.width, self.height), 255)
+        draw = ImageDraw.Draw(img)
+        text_to_draw = self.text
+        draw.text((5, 5), text_to_draw, font=fnt)
+        img.save(self.text + '.png')
+        return draw
+
+    def saveImageToPath(self, Path):
+        if not os.path.isdir("font"):
+            font_dir = "/usr/share/fonts/truetype/msttcorefonts/"
+        else:
+            font_dir = "font/"
+
+        # TODO: сделать шрифт параметром
+        fnt = ImageFont.truetype(font_dir + "Verdana.ttf", self.font_size)
+        img = Image.new('L', (self.width, self.height), 255)
+        draw = ImageDraw.Draw(img)
+        text_to_draw = self.text
+        draw.text((5, 5), text_to_draw, font=fnt)
+        if Path.endswith('/'):
+            img.save(Path +self.text+'.png')
+        else:
+            img.save(Path +'/'+self.text+'.png')
         return draw
